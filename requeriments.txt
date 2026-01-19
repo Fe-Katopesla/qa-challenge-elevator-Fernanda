@@ -1,0 +1,6 @@
+behave
+requests
+paho-mqtt
+pytest
+flask
+allure-behave
