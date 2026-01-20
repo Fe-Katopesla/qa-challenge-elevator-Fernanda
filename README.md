@@ -22,9 +22,9 @@ To run all test scenarios (including the bonus resilience tests), simply run:
 python -m behave
 ```
 Step 2: Check the Results The terminal will display the execution steps in real-time.
-* [ ]Green: Scenario passed.
+* [ ] Green: Scenario passed.
 
-* [ ]Red: Scenario failed.
+* [ ] Red: Scenario failed.
 
 * You can also check the full log file generated after execution: log_execucao_final.txt
 
@@ -95,11 +95,11 @@ to free the door.
 
 ## 6.Bonus
 
-* [ ]The simulator is not just a passive script. I implemented a decision tree that processes the MQTT payload.
+* [ ] The simulator is not just a passive script. I implemented a decision tree that processes the MQTT payload.
 
-* [ ]First, it checks if it's a maintenance command (State Functionality). If not, it checks if it's movement. If it is movement, I applied a boundary validation layer (Safety Functionality).
+* [ ] First, it checks if it's a maintenance command (State Functionality). If not, it checks if it's movement. If it is movement, I applied a boundary validation layer (Safety Functionality).
 
-* [ ]If the input is invalid, the system triggers the Error Logs module (Observability Functionality) instead of silently failing.
+* [ ] If the input is invalid, the system triggers the Error Logs module (Observability Functionality) instead of silently failing.
 
 ## 7. Future improvements
 If this were to become a continuous integration pipeline, here is what I would improve:
