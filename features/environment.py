@@ -2,20 +2,20 @@ import subprocess
 import time
 import sys
 
-#liga os simuladores antes do teste e desliga depois
+# Hooks to manage the test lifecycle (Start/Stop simulators)
 
 def before_all(context):
-    print("Iniciando Simuladores (API e Elevador)")
-    #inicia a API (mock_api.py) em segundo plano
+    print("Starting Simulators (API and Elevator)...")
+    # Starts API (mock_api.py) in the background
     context.api_process = subprocess.Popen([sys.executable, "mock_api.py"])
     
-    #inicia o Elevador (mock_elevator_mqtt.py) em segundo plano
+    # Starts Elevator (mock_elevator_mqtt.py) in the background
     context.elevator_process = subprocess.Popen([sys.executable, "mock_elevator_mqtt.py"])
     
-    #espera 3 segundos para garantir que tudo ligou
+    # Waits 3 seconds to ensure services are fully up
     time.sleep(3)
 
 def after_all(context):
-    print("Desligando Simuladores")
+    print("Stopping Simulators...")
     context.api_process.terminate()
     context.elevator_process.terminate()
