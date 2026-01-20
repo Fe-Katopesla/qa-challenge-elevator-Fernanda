@@ -1,15 +1,15 @@
-Feature: Suite Completa de Testes do Elevador IoT
+Feature: IoT Elevator Complete Test Suite
 
   Background:
-    Given que o simulador do elevador e a API estão online
+    Given the elevator simulator and API are online
 
-  #REQUISITOS 1 e 3: Movimentação e Limites
-  Scenario Outline: Mover o elevador para andares válidos
-    When envio o comando "MOVE" para o andar "<andar>"
-    Then o elevador deve reportar que está no andar "<andar>"
+  # REQUIREMENTS 1 and 3: Movement and Boundaries
+  Scenario Outline: Move the elevator to valid floors
+    When I send the "MOVE" command to floor "<floor>"
+    Then the elevator should report it is on floor "<floor>"
 
     Examples:
-      | andar |
+      | floor |
       | 1     |
       | 2     |
       | 3     |
@@ -21,29 +21,29 @@ Feature: Suite Completa de Testes do Elevador IoT
       | 9     |
       | 10    |
 
-  Scenario: Tentar mover para um andar inválido
-    When envio o comando "MOVE" para o andar "15"
-    Then o sistema deve registrar um erro de comando inválido
+  Scenario: Attempt to move to an invalid floor
+    When I send the "MOVE" command to floor "15"
+    Then the system should register an invalid command error
 
-  #REQUISITO 2: manutenção
-  Scenario: Ativar e desativar modo de manutenção
-    When envio o comando "MAINTENANCE_ON"
-    Then o elevador deve entrar em modo de manutenção
-    When envio o comando "MAINTENANCE_OFF"
-    Then o elevador deve sair do modo de manutenção
+  # REQUIREMENT 2: Maintenance
+  Scenario: Activate and Deactivate maintenance mode
+    When I send the "MAINTENANCE_ON" command
+    Then the elevator should enter maintenance mode
+    When I send the "MAINTENANCE_OFF" command
+    Then the elevator should exit maintenance mode
 
-  #REQUISITO 4: monitoramento continuo
-  Scenario: Verificar recebimento contínuo de dados
-    Then a cloud deve receber dados de "position", "weight" e "door_status" periodicamente
+  # REQUIREMENT 4: Continuous Monitoring
+  Scenario: Verify continuous data reception
+    Then the cloud should periodically receive "position", "weight", and "door_status" data
 
-  #REQUISITO 5: validação da API (Dados incorretos)
-  Scenario: Enviar payload inválido para a API
-    When envio um pacote de dados sem o campo "position" para a API
-    Then a API deve retornar um erro 400
+  # REQUIREMENT 5: API Validation (Negative Testing)
+  Scenario: Send invalid payload to the API
+    When I send a data packet without the "position" field to the API
+    Then the API should return a 400 error
 
-  #REQUISITO 6: Resiliência
-  Scenario: Store and Forward (Resiliência de conexão)
-    Given que a conexão com a API cai
-    When o elevador gera dados por alguns segundos
-    And a conexão com a API é restabelecida
-    Then a API deve ter recebido os dados que estavam guardados
+  # REQUIREMENT 6: Resilience (Bonus)
+  Scenario: Store and Forward (Connection Resilience)
+    Given that the API connection is lost
+    When the elevator generates data for a few seconds
+    And the API connection is restored
+    Then the API should have received the stored data
