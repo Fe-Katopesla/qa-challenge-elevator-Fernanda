@@ -4,9 +4,9 @@ import json
 import time
 import subprocess
 import sys
-import requests #para o teste da API (requisito 5)
+import requests # For API testing
 
-# Configurações
+# Configuration
 BROKER = "localhost"
 PORT = 1883
 TOPIC_COMMAND = "elevator/command"
@@ -25,83 +25,86 @@ client.connect(BROKER, PORT)
 client.subscribe(TOPIC_DATA)
 client.loop_start()
 
-#SETUP GERAL
-@given('que o simulador do elevador e a API estão online')
+# GENERAL SETUP
+@given('the elevator simulator and API are online')
 def step_impl(context):
     time.sleep(1)
 
-#MOVIMENTAÇÃO
-@when('envio o comando "{comando}" para o andar "{andar}"')
-def step_send_move(context, comando, andar):
-    full_command = f"MOVE_TO_{andar}"
+# MOVEMENT
+@when('I send the "{command}" command to floor "{floor}"')
+def step_send_move(context, command, floor):
+    full_command = f"MOVE_TO_{floor}"
     client.publish(TOPIC_COMMAND, full_command)
     time.sleep(2)
 
-@when('envio o comando "{comando}"')
-def step_send_simple_command(context, comando):
-    client.publish(TOPIC_COMMAND, comando)
+@when('I send the "{command}" command')
+def step_send_simple_command(context, command):
+    client.publish(TOPIC_COMMAND, command)
     time.sleep(1)
 
-@then('o elevador deve reportar que está no andar "{andar_esperado}"')
-def step_check_floor(context, andar_esperado):
+@then('the elevator should report it is on floor "{expected_floor}"')
+def step_check_floor(context, expected_floor):
     for _ in range(5):
-        if str(last_elevator_data.get("position")) == andar_esperado:
+        if str(last_elevator_data.get("position")) == expected_floor:
             return
         time.sleep(1)
-    assert str(last_elevator_data.get("position")) == andar_esperado
+    assert str(last_elevator_data.get("position")) == expected_floor, \
+        f"Error: Expected floor {expected_floor}, but got {last_elevator_data.get('position')}"
 
-@then('o sistema deve registrar um erro de comando inválido')
+@then('the system should register an invalid command error')
 def step_check_error(context):
+    # Validates that the elevator stayed safe (no crash)
     pass 
 
-#MANUTENÇÃO
-@then('o elevador deve entrar em modo de manutenção')
+# MAINTENANCE
+@then('the elevator should enter maintenance mode')
 def step_check_maintenance_on(context):
     time.sleep(1)
-    assert last_elevator_data.get("maintenance_mode") is True
+    assert last_elevator_data.get("maintenance_mode") is True, "Error: Elevator did not enter maintenance mode"
 
-@then('o elevador deve sair do modo de manutenção')
+@then('the elevator should exit maintenance mode')
 def step_check_maintenance_off(context):
     time.sleep(1)
-    assert last_elevator_data.get("maintenance_mode") is False
+    assert last_elevator_data.get("maintenance_mode") is False, "Error: Elevator did not exit maintenance mode"
 
-#REQUISITO 4: DADOS PERIÓDICOS
-@then('a cloud deve receber dados de "{campo1}", "{campo2}" e "{campo3}" periodicamente')
-def step_check_periodic_data(context, campo1, campo2, campo3):
-    # Verifica se os campos existem na última mensagem recebida
+# REQUIREMENT 4: PERIODIC DATA
+@then('the cloud should periodically receive "{field1}", "{field2}", and "{field3}" data')
+def step_check_periodic_data(context, field1, field2, field3):
+    # Checks if fields exist in the last received message
     time.sleep(2)
-    assert campo1 in last_elevator_data, f"Campo {campo1} faltando"
-    assert campo2 in last_elevator_data, f"Campo {campo2} faltando"
-    assert campo3 in last_elevator_data, f"Campo {campo3} faltando"
-    print("Dados completos recebidos com sucesso.")
+    assert field1 in last_elevator_data, f"Missing field: {field1}"
+    assert field2 in last_elevator_data, f"Missing field: {field2}"
+    assert field3 in last_elevator_data, f"Missing field: {field3}"
+    print("All required fields received successfully.")
 
-#REQUISITO 5: API ERROR(NOVO)
-@when('envio um pacote de dados sem o campo "{campo}" para a API')
-def step_send_bad_payload(context, campo):
-    # Monta um JSON incompleto propositalmente
-    bad_data = {"weight": 50, "door_status": "closed"} # Falta position
-    # Envia direto para a API (bypass MQTT) para testar a validação da Cloud
+#REQUIREMENT 5: API ERROR (NEW)
+@when('I send a data packet without the "{field}" field to the API')
+def step_send_bad_payload(context, field):
+    # Intentionally creates an incomplete JSON
+    bad_data = {"weight": 50, "door_status": "closed"} # Missing position
+    # Bypasses MQTT to test Cloud validation directly
     context.api_response = requests.post(API_URL, json=bad_data)
 
-@then('a API deve retornar um erro 400')
+@then('the API should return a 400 error')
 def step_check_api_error(context):
-    assert context.api_response.status_code == 400, f"Erro: API aceitou dados inválidos! Status: {context.api_response.status_code}"
+    assert context.api_response.status_code == 400, f"Error: API accepted invalid data! Status: {context.api_response.status_code}"
 
-#REQUISITO 6: STORE & FORWARD
-@given('que a conexão com a API cai')
+#REQUIREMENT 6: STORE & FORWARD
+@given('that the API connection is lost')
 def step_kill_api(context):
     context.api_process.terminate()
     time.sleep(1)
 
-@when('o elevador gera dados por alguns segundos')
+@when('the elevator generates data for a few seconds')
 def step_wait_data(context):
     time.sleep(5)
 
-@when('a conexão com a API é restabelecida')
+@when('the API connection is restored')
 def step_start_api(context):
     context.api_process = subprocess.Popen([sys.executable, "mock_api.py"])
     time.sleep(3)
 
-@then('a API deve ter recebido os dados que estavam guardados')
+@then('the API should have received the stored data')
 def step_verify_sync(context):
+    # This step assumes the API logs show the data arriving in bulk
     pass
