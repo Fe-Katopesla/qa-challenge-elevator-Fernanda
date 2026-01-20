@@ -1,1 +1,21 @@
-__pycache__
+# Python Bytecode
+__pycache__/
+*.pyc
+
+# Virtual Environments (Never push these)
+venv/
+env/
+.venv/
+
+# IDEs and Editors (Local configs)
+.vscode/
+.idea/
+
+# Logs and Temporary Files
+*.log
+# Keeping the final execution log as proof
+!log_execucao_final.txt
+
+# OS Files
+.DS_Store
+Thumbs.db
