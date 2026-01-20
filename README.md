@@ -93,7 +93,7 @@ pkill -f mock_elevator_mqtt.py
 
 to free the door.
 
-## 5.Bonus
+## 6.Bonus
 
 * [ ]The simulator is not just a passive script. I implemented a decision tree that processes the MQTT payload.
 
@@ -101,7 +101,7 @@ to free the door.
 
 * [ ]If the input is invalid, the system triggers the Error Logs module (Observability Functionality) instead of silently failing.
 
-## 6. Future improvements
+## 7. Future improvements
 If this were to become a continuous integration pipeline, here is what I would improve:
 
 * [ ] Create a Dockerfile to containerize the environment, ensuring the tests run identically on any machine or CI server.
