@@ -68,8 +68,15 @@ This means the MQTT Broker is not running.
 
 Fix: Run 
 ```bash
-sudo service mosquitto start.
+sudo service mosquitto start
 ```
+
+After running, you can check if it really started with this command:
+```bash
+sudo service mosquitto status
+```
+
+If a green dot or "active (running)" appears, everything is fine
 
 * [ ] 2. Port 5000 is in use:
 
@@ -77,8 +84,14 @@ This happens if a previous test didn't close the API correctly.
 
 Fix: Run 
 ```bash
-pkill -f mock_api.py to free the port.
+pkill -f mock_api.py
 ```
+
+```bash
+pkill -f mock_elevator_mqtt.py
+```
+
+to free the door.
 
 
 ## 5. Future improvements
