@@ -93,8 +93,15 @@ pkill -f mock_elevator_mqtt.py
 
 to free the door.
 
+## 5.Bonus
 
-## 5. Future improvements
+* [ ]The simulator is not just a passive script. I implemented a decision tree that processes the MQTT payload.
+
+* [ ]First, it checks if it's a maintenance command (State Functionality). If not, it checks if it's movement. If it is movement, I applied a boundary validation layer (Safety Functionality).
+
+* [ ]If the input is invalid, the system triggers the Error Logs module (Observability Functionality) instead of silently failing.
+
+## 6. Future improvements
 If this were to become a continuous integration pipeline, here is what I would improve:
 
 * [ ] Create a Dockerfile to containerize the environment, ensuring the tests run identically on any machine or CI server.
