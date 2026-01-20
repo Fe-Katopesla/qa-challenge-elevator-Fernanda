@@ -61,6 +61,26 @@ I included a README.md and detailed logs to make the handover process smoother.
 | **06** | Formatting & Linting | Done | Quality | Small |
 | **07** | Documentation | Done | Docs | Small |
 
+## 5. In case of troubleshooting
+* [ ] 1. Connection Refused (Errno 111):
+
+This means the MQTT Broker is not running.
+
+Fix: Run 
+```bash
+sudo service mosquitto start.
+```
+
+* [ ] 2. Port 5000 is in use:
+
+This happens if a previous test didn't close the API correctly.
+
+Fix: Run 
+```bash
+pkill -f mock_api.py to free the port.
+```
+
+
 ## 5. Future improvements
 If this were to become a continuous integration pipeline, here is what I would improve:
 
@@ -75,3 +95,4 @@ If this were to become a continuous integration pipeline, here is what I would i
 * I also included the execution log to validate the features. You can find it here: log_execucao_final.txt.
 
 Thank you!
+
