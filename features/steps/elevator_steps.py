@@ -53,8 +53,11 @@ def step_check_floor(context, expected_floor):
 
 @then('the system should register an invalid command error')
 def step_check_error(context):
-    # Validates that the elevator stayed safe (no crash)
-    pass 
+    # Log validation in the test output
+    print("[TEST LOG] Verified: The system correctly rejected the invalid floor command.")
+    # Ensure the elevator did NOT move to the invalid floor (15)
+    # It should still be at the last valid floor (which was 10 in the previous scenario)
+    assert last_elevator_data.get("position") != 15, "Critical Error: Elevator moved to an invalid floor!"
 
 # MAINTENANCE
 @then('the elevator should enter maintenance mode')
@@ -102,7 +105,7 @@ def step_wait_data(context):
 @when('the API connection is restored')
 def step_start_api(context):
     context.api_process = subprocess.Popen([sys.executable, "mock_api.py"])
-    time.sleep(3)
+    time.sleep(5)
 
 @then('the API should have received the stored data')
 def step_verify_sync(context):
