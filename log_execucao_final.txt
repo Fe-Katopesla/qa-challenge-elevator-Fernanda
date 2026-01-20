@@ -105,4 +105,4 @@ Stopping Simulators...
 1 feature passed, 0 failed, 0 skipped
 15 scenarios passed, 0 failed, 0 skipped
 48 steps passed, 0 failed, 0 skipped
-Took 0min 51.914s
+Took 1min 19.307s

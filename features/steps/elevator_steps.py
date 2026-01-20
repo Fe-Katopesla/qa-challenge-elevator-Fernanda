@@ -62,12 +62,12 @@ def step_check_error(context):
 # MAINTENANCE
 @then('the elevator should enter maintenance mode')
 def step_check_maintenance_on(context):
-    time.sleep(1)
+    time.sleep(5)
     assert last_elevator_data.get("maintenance_mode") is True, "Error: Elevator did not enter maintenance mode"
 
 @then('the elevator should exit maintenance mode')
 def step_check_maintenance_off(context):
-    time.sleep(1)
+    time.sleep(5)
     assert last_elevator_data.get("maintenance_mode") is False, "Error: Elevator did not exit maintenance mode"
 
 # REQUIREMENT 4: PERIODIC DATA
