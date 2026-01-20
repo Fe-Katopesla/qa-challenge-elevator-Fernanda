@@ -6,82 +6,82 @@ Feature: Suite Completa de Testes do Elevador IoT # features/elevator.feature:1
 
   Feature: Suite Completa de Testes do Elevador IoT  # features/elevator.feature:1
 
-  Scenario Outline: Mover o elevador para andares v·lidos -- @1.1   # features/elevator.feature:13
-    Given que o simulador do elevador e a API est„o online          # features/steps/elevator_steps.py:29
+  Scenario Outline: Mover o elevador para andares v√°lidos -- @1.1   # features/elevator.feature:13
+    Given que o simulador do elevador e a API est√£o online          # features/steps/elevator_steps.py:29
     When envio o comando "MOVE" para o andar "1"                    # features/steps/elevator_steps.py:34
-    Then o elevador deve reportar que est· no andar "1"             # features/steps/elevator_steps.py:45
+    Then o elevador deve reportar que est√° no andar "1"             # features/steps/elevator_steps.py:45
 
-  Scenario Outline: Mover o elevador para andares v·lidos -- @1.2   # features/elevator.feature:14
-    Given que o simulador do elevador e a API est„o online          # features/steps/elevator_steps.py:29
+  Scenario Outline: Mover o elevador para andares v√°lidos -- @1.2   # features/elevator.feature:14
+    Given que o simulador do elevador e a API est√£o online          # features/steps/elevator_steps.py:29
     When envio o comando "MOVE" para o andar "2"                    # features/steps/elevator_steps.py:34
-    Then o elevador deve reportar que est· no andar "2"             # features/steps/elevator_steps.py:45
+    Then o elevador deve reportar que est√° no andar "2"             # features/steps/elevator_steps.py:45
 
-  Scenario Outline: Mover o elevador para andares v·lidos -- @1.3   # features/elevator.feature:15
-    Given que o simulador do elevador e a API est„o online          # features/steps/elevator_steps.py:29
+  Scenario Outline: Mover o elevador para andares v√°lidos -- @1.3   # features/elevator.feature:15
+    Given que o simulador do elevador e a API est√£o online          # features/steps/elevator_steps.py:29
     When envio o comando "MOVE" para o andar "3"                    # features/steps/elevator_steps.py:34
-    Then o elevador deve reportar que est· no andar "3"             # features/steps/elevator_steps.py:45
+    Then o elevador deve reportar que est√° no andar "3"             # features/steps/elevator_steps.py:45
 
-  Scenario Outline: Mover o elevador para andares v·lidos -- @1.4   # features/elevator.feature:16
-    Given que o simulador do elevador e a API est„o online          # features/steps/elevator_steps.py:29
+  Scenario Outline: Mover o elevador para andares v√°lidos -- @1.4   # features/elevator.feature:16
+    Given que o simulador do elevador e a API est√£o online          # features/steps/elevator_steps.py:29
     When envio o comando "MOVE" para o andar "4"                    # features/steps/elevator_steps.py:34
-    Then o elevador deve reportar que est· no andar "4"             # features/steps/elevator_steps.py:45
+    Then o elevador deve reportar que est√° no andar "4"             # features/steps/elevator_steps.py:45
 
-  Scenario Outline: Mover o elevador para andares v·lidos -- @1.5   # features/elevator.feature:17
-    Given que o simulador do elevador e a API est„o online          # features/steps/elevator_steps.py:29
+  Scenario Outline: Mover o elevador para andares v√°lidos -- @1.5   # features/elevator.feature:17
+    Given que o simulador do elevador e a API est√£o online          # features/steps/elevator_steps.py:29
     When envio o comando "MOVE" para o andar "5"                    # features/steps/elevator_steps.py:34
-    Then o elevador deve reportar que est· no andar "5"             # features/steps/elevator_steps.py:45
+    Then o elevador deve reportar que est√° no andar "5"             # features/steps/elevator_steps.py:45
 
-  Scenario Outline: Mover o elevador para andares v·lidos -- @1.6   # features/elevator.feature:18
-    Given que o simulador do elevador e a API est„o online          # features/steps/elevator_steps.py:29
+  Scenario Outline: Mover o elevador para andares v√°lidos -- @1.6   # features/elevator.feature:18
+    Given que o simulador do elevador e a API est√£o online          # features/steps/elevator_steps.py:29
     When envio o comando "MOVE" para o andar "6"                    # features/steps/elevator_steps.py:34
-    Then o elevador deve reportar que est· no andar "6"             # features/steps/elevator_steps.py:45
+    Then o elevador deve reportar que est√° no andar "6"             # features/steps/elevator_steps.py:45
 
-  Scenario Outline: Mover o elevador para andares v·lidos -- @1.7   # features/elevator.feature:19
-    Given que o simulador do elevador e a API est„o online          # features/steps/elevator_steps.py:29
+  Scenario Outline: Mover o elevador para andares v√°lidos -- @1.7   # features/elevator.feature:19
+    Given que o simulador do elevador e a API est√£o online          # features/steps/elevator_steps.py:29
     When envio o comando "MOVE" para o andar "7"                    # features/steps/elevator_steps.py:34
-    Then o elevador deve reportar que est· no andar "7"             # features/steps/elevator_steps.py:45
+    Then o elevador deve reportar que est√° no andar "7"             # features/steps/elevator_steps.py:45
 
-  Scenario Outline: Mover o elevador para andares v·lidos -- @1.8   # features/elevator.feature:20
-    Given que o simulador do elevador e a API est„o online          # features/steps/elevator_steps.py:29
+  Scenario Outline: Mover o elevador para andares v√°lidos -- @1.8   # features/elevator.feature:20
+    Given que o simulador do elevador e a API est√£o online          # features/steps/elevator_steps.py:29
     When envio o comando "MOVE" para o andar "8"                    # features/steps/elevator_steps.py:34
-    Then o elevador deve reportar que est· no andar "8"             # features/steps/elevator_steps.py:45
+    Then o elevador deve reportar que est√° no andar "8"             # features/steps/elevator_steps.py:45
 
-  Scenario Outline: Mover o elevador para andares v·lidos -- @1.9   # features/elevator.feature:21
-    Given que o simulador do elevador e a API est„o online          # features/steps/elevator_steps.py:29
+  Scenario Outline: Mover o elevador para andares v√°lidos -- @1.9   # features/elevator.feature:21
+    Given que o simulador do elevador e a API est√£o online          # features/steps/elevator_steps.py:29
     When envio o comando "MOVE" para o andar "9"                    # features/steps/elevator_steps.py:34
-    Then o elevador deve reportar que est· no andar "9"             # features/steps/elevator_steps.py:45
+    Then o elevador deve reportar que est√° no andar "9"             # features/steps/elevator_steps.py:45
 
-  Scenario Outline: Mover o elevador para andares v·lidos -- @1.10   # features/elevator.feature:22
-    Given que o simulador do elevador e a API est„o online           # features/steps/elevator_steps.py:29
+  Scenario Outline: Mover o elevador para andares v√°lidos -- @1.10   # features/elevator.feature:22
+    Given que o simulador do elevador e a API est√£o online           # features/steps/elevator_steps.py:29
     When envio o comando "MOVE" para o andar "10"                    # features/steps/elevator_steps.py:34
-    Then o elevador deve reportar que est· no andar "10"             # features/steps/elevator_steps.py:45
+    Then o elevador deve reportar que est√° no andar "10"             # features/steps/elevator_steps.py:45
 
-  Scenario: Tentar mover para um andar inv·lido               # features/elevator.feature:24
-    Given que o simulador do elevador e a API est„o online    # features/steps/elevator_steps.py:29
+  Scenario: Tentar mover para um andar inv√°lido               # features/elevator.feature:24
+    Given que o simulador do elevador e a API est√£o online    # features/steps/elevator_steps.py:29
     When envio o comando "MOVE" para o andar "15"             # features/steps/elevator_steps.py:34
-    Then o sistema deve registrar um erro de comando inv·lido # features/steps/elevator_steps.py:53
+    Then o sistema deve registrar um erro de comando inv√°lido # features/steps/elevator_steps.py:53
 
-  Scenario: Ativar e desativar modo de manutenÁ„o          # features/elevator.feature:29
-    Given que o simulador do elevador e a API est„o online # features/steps/elevator_steps.py:29
+  Scenario: Ativar e desativar modo de manuten√ß√£o          # features/elevator.feature:29
+    Given que o simulador do elevador e a API est√£o online # features/steps/elevator_steps.py:29
     When envio o comando "MAINTENANCE_ON"                  # features/steps/elevator_steps.py:40
-    Then o elevador deve entrar em modo de manutenÁ„o      # features/steps/elevator_steps.py:58
+    Then o elevador deve entrar em modo de manuten√ß√£o      # features/steps/elevator_steps.py:58
     When envio o comando "MAINTENANCE_OFF"                 # features/steps/elevator_steps.py:40
-    Then o elevador deve sair do modo de manutenÁ„o        # features/steps/elevator_steps.py:63
+    Then o elevador deve sair do modo de manuten√ß√£o        # features/steps/elevator_steps.py:63
 
-  Scenario: Verificar recebimento contÌnuo de dados                                        # features/elevator.feature:36
-    Given que o simulador do elevador e a API est„o online                                 # features/steps/elevator_steps.py:29
+  Scenario: Verificar recebimento cont√≠nuo de dados                                        # features/elevator.feature:36
+    Given que o simulador do elevador e a API est√£o online                                 # features/steps/elevator_steps.py:29
     Then a cloud deve receber dados de "position", "weight" e "door_status" periodicamente # features/steps/elevator_steps.py:69
 
-  Scenario: Enviar payload inv·lido para a API                      # features/elevator.feature:40
-    Given que o simulador do elevador e a API est„o online          # features/steps/elevator_steps.py:29
+  Scenario: Enviar payload inv√°lido para a API                      # features/elevator.feature:40
+    Given que o simulador do elevador e a API est√£o online          # features/steps/elevator_steps.py:29
     When envio um pacote de dados sem o campo "position" para a API # features/steps/elevator_steps.py:79
     Then a API deve retornar um erro 400                            # features/steps/elevator_steps.py:86
 
-  Scenario: Store and Forward (ResiliÍncia de conex„o)          # features/elevator.feature:45
-    Given que o simulador do elevador e a API est„o online      # features/steps/elevator_steps.py:29
-    Given que a conex„o com a API cai                           # features/steps/elevator_steps.py:91
+  Scenario: Store and Forward (Resili√™ncia de conex√£o)          # features/elevator.feature:45
+    Given que o simulador do elevador e a API est√£o online      # features/steps/elevator_steps.py:29
+    Given que a conex√£o com a API cai                           # features/steps/elevator_steps.py:91
     When o elevador gera dados por alguns segundos              # features/steps/elevator_steps.py:96
-    And a conex„o com a API È restabelecida                     # features/steps/elevator_steps.py:100
+    And a conex√£o com a API √© restabelecida                     # features/steps/elevator_steps.py:100
  * Serving Flask app 'mock_api'
  * Debug mode: on
     Then a API deve ter recebido os dados que estavam guardados # features/steps/elevator_steps.py:105
@@ -89,4 +89,4 @@ Feature: Suite Completa de Testes do Elevador IoT # features/elevator.feature:1
 1 feature passed, 0 failed, 0 skipped
 15 scenarios passed, 0 failed, 0 skipped
 48 steps passed, 0 failed, 0 skipped
-Took 0min 52.085s
+Took 1min 8.844s
