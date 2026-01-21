@@ -48,13 +48,13 @@ def step_send_simple_command(context, command):
 @then('the elevator should report it is on floor "{expected_floor}"')
 def step_check_floor(context, expected_floor):
     for _ in range(5):
-        # Proteção para caso o dado ainda seja None
+        # Protection in case data is still None
         pos = last_elevator_data.get("position")
         if str(pos) == expected_floor:
             return
         time.sleep(1)
     
-    # Falha se não atualizou
+    # Fail if not updated
     assert str(last_elevator_data.get("position")) == expected_floor, \
         f"Error: Expected floor {expected_floor}, but got {last_elevator_data.get('position')}"
 
@@ -62,9 +62,9 @@ def step_check_floor(context, expected_floor):
 def step_check_error(context):
     print("[TEST LOG] Verified: The system correctly rejected the invalid floor command.")
     
-    # Validação Genérica de Range (Funciona para 0, 11, -1, 100)
+    # Generic Range Validation (Works for 0, 11, -1, 100)
     try:
-        current_pos = int(last_elevator_data.get("position", 1)) # Default 1 se vazio
+        current_pos = int(last_elevator_data.get("position", 1)) # Default 1 if empty
     except (ValueError, TypeError):
         current_pos = 1
 
@@ -91,7 +91,7 @@ def step_check_periodic_data(context, field1, field2, field3):
     assert field3 in last_elevator_data, f"Missing field: {field3}"
     print("All required fields received successfully.")
 
-# REQUIREMENT 5: API ERROR (NEW)
+# REQUIREMENT 5: API ERROR (NEW/FIX)
 @when('I send a data packet without the "{field}" field to the API')
 def step_send_bad_payload(context, field):
     bad_data = {"weight": 50, "door_status": "closed"} 
@@ -102,9 +102,9 @@ def step_check_api_error(context):
     assert context.api_response.status_code == 400, \
         f"Error: API accepted invalid data! Status: {context.api_response.status_code}"
 
-# ==========================================
-# NOVOS STEPS DA VALIDAÇÃO AVANÇADA DE API
-# ==========================================
+
+# ADVANCED API VALIDATION STEPS
+
 @when("I POST raw payload '{payload}' to the API")
 def step_post_raw_payload(context, payload):
     try:
@@ -117,18 +117,16 @@ def step_post_raw_payload(context, payload):
 @then('the response status code should be {status_code:d}')
 def step_check_status_code(context, status_code):
     assert context.api_response.status_code == status_code, \
-        f"Erro: Esperava status {status_code}, mas recebeu {context.api_response.status_code}. Body: {context.api_response.text}"
+        f"Error: Expected status {status_code}, but received {context.api_response.status_code}. Body: {context.api_response.text}"
 
 @then('the response error message should contain "{error_text}"')
 def step_check_error_message(context, error_text):
     response_json = context.api_response.json()
     actual_error = response_json.get("error", "")
     assert error_text in actual_error, \
-        f"Erro: A mensagem de erro '{actual_error}' não contém o texto esperado '{error_text}'"
+        f"Error: The error message '{actual_error}' does not contain the expected text '{error_text}'"
 
-# ==========================================
-# STEP DE CONTROLE DE PORTA (Opcional)
-# ==========================================
+# DOOR CONTROL STEP (Optional)
 @then('the door status should be "{expected_status}"')
 def step_check_door_status(context, expected_status):
     time.sleep(1)
@@ -136,9 +134,8 @@ def step_check_door_status(context, expected_status):
     assert current_status == expected_status, \
         f"Error: Expected door to be {expected_status}, but it is {current_status}"
 
-# ==========================================
 # REQUIREMENT 6: STORE & FORWARD (RESILIENCE)
-# ==========================================
+
 @given('that the API connection is lost')
 def step_kill_api(context):
     if hasattr(context, 'api_process'):
@@ -161,7 +158,7 @@ def step_start_api(context):
         stdout=context.api_log,
         stderr=context.api_log
     )
-    time.sleep(5) # Tempo para a API subir e o Elevador reenviar o buffer
+    time.sleep(5) # Wait for API to restart and Elevator to resend buffer
 
 @then('the API should have received the stored data')
 def step_verify_sync(context):
@@ -170,24 +167,24 @@ def step_verify_sync(context):
     print("[TEST LOG] Waiting for Store & Forward buffer flush...", flush=True)
     time.sleep(2) 
 
-    # Tenta enviar um pacote de teste ("Probe") direto para a API
+    # Sends a test packet ("Probe") directly to the API
     probe_data = {
         "position": 1, 
         "door_status": "closed", 
         "weight": 0, 
-        "type": "sync_verification_probe" # Campo especial para passar na validacao
+        "type": "sync_verification_probe" # Special field to bypass validation
     }
 
     try:
-        # Faz um POST direto ignorando o MQTT para ver se a API está viva
+        # Direct POST ignoring MQTT to check if API is alive
         response = requests.post(API_URL, json=probe_data, timeout=5)
         
-        # 1: A API deve responder 200 OK
+        # 1: API must answer 200 OK
         assert response.status_code == 200, \
             f"Failure: API did not recover correctly. Expected 200, got {response.status_code}"
             
         print("[TEST LOG] SUCCESS: API is back online and accepting data. Resilience confirmed.")
 
     except requests.exceptions.ConnectionError:
-        # 2: Se der erro de conexão, o teste FALHA explicitamente
+        # 2: If connection fails, test fails explicitly
         assert False, "Critical Failure: API process is still unreachable after restart attempt."
