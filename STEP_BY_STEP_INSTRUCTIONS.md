@@ -85,7 +85,7 @@ source venv/bin/activate
 Activates this bubble (the command venv should appear in the terminal).
 
 ```bash
-pip install -r requirements.txt
+pip install -r requeriments.txt
 ```
 Installs the necessary tools (Behave, Flask, Paho-MQTT, etc.).
 
