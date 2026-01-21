@@ -5,6 +5,7 @@ import time
 import subprocess
 import sys
 import requests # For API testing
+import os
 
 # Configuration
 BROKER = "localhost"
@@ -102,9 +103,7 @@ def step_check_api_error(context):
     assert context.api_response.status_code == 400, \
         f"Error: API accepted invalid data! Status: {context.api_response.status_code}"
 
-
 # ADVANCED API VALIDATION STEPS
-
 @when("I POST raw payload '{payload}' to the API")
 def step_post_raw_payload(context, payload):
     try:
@@ -126,7 +125,7 @@ def step_check_error_message(context, error_text):
     assert error_text in actual_error, \
         f"Error: The error message '{actual_error}' does not contain the expected text '{error_text}'"
 
-# DOOR CONTROL STEP (Optional)
+# DOOR CONTROL STEP
 @then('the door status should be "{expected_status}"')
 def step_check_door_status(context, expected_status):
     time.sleep(1)
@@ -135,7 +134,6 @@ def step_check_door_status(context, expected_status):
         f"Error: Expected door to be {expected_status}, but it is {current_status}"
 
 # REQUIREMENT 6: STORE & FORWARD (RESILIENCE)
-
 @given('that the API connection is lost')
 def step_kill_api(context):
     if hasattr(context, 'api_process'):
@@ -152,6 +150,11 @@ def step_wait_data(context):
 @when('the API connection is restored')
 def step_start_api(context):
     print("[TEST LOG] Restoring API...", flush=True)
+    
+    # FIX: Create logs directory if it doesn't exist
+    if not os.path.exists("logs"):
+        os.makedirs("logs")
+    # --------------------
     context.api_log = open("logs/api_restart.log", "w")
     context.api_process = subprocess.Popen(
         [sys.executable, "-u", "mock_api.py"],
