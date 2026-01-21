@@ -32,14 +32,66 @@ Feature: IoT Elevator Complete Test Suite
     When I send the "MAINTENANCE_OFF" command
     Then the elevator should exit maintenance mode
 
+  # NOVO: Safety Lock (Testa se o elevador bloqueia movimento em manutenção)
+  Scenario: Safety Lock - Attempt to move during maintenance
+    When I send the "MOVE" command to floor "1"
+    Then the elevator should report it is on floor "1"
+    # ----------------------------------
+    When I send the "MAINTENANCE_ON" command
+    Then the elevator should enter maintenance mode
+    # Tenta mover, mas não deve sair do lugar
+    When I send the "MOVE" command to floor "5"
+    Then the elevator should report it is on floor "1"
+    # Limpa o estado para os próximos testes
+    When I send the "MAINTENANCE_OFF" command
+  # NOVO: Door Status (Para validar o log que conversamos)
+  Scenario: Open and close the door
+    When I send the "OPEN_DOOR" command
+    Then the door status should be "open"
+    When I send the "CLOSE_DOOR" command
+    Then the door status should be "closed"
+
   # REQUIREMENT 4: Continuous Monitoring
   Scenario: Verify continuous data reception
     Then the cloud should periodically receive "position", "weight", and "door_status" data
 
-  # REQUIREMENT 5: API Validation (Negative Testing)
-  Scenario: Send invalid payload to the API
-    When I send a data packet without the "position" field to the API
-    Then the API should return a 400 error
+  # REQUIREMENT 5: API Validation (Negative Testing Avançado)
+  Scenario Outline: API - Validate missing required fields
+    When I POST raw payload '<payload>' to the API
+    Then the response status code should be 400
+    And the response error message should contain "Missing fields"
+
+    Examples:
+      | payload                                 |
+      | {"door_status":"closed","weight":0}     |
+      | {"position":1,"weight":0}               |
+      | {"position":1,"door_status":"closed"}   |
+      | {}                                      |
+
+  Scenario Outline: API - Validate invalid position boundaries
+    When I POST raw payload '<payload>' to the API
+    Then the response status code should be 400
+    And the response error message should contain "Invalid position"
+
+    Examples:
+      | payload                                                  |
+      | {"position": 0, "door_status": "closed", "weight": 10}   |
+      | {"position": 11, "door_status": "closed", "weight": 10}  |
+
+  Scenario: API - Validate invalid door status enum
+    When I POST raw payload '{"position": 1, "door_status": "broken", "weight": 10}' to the API
+    Then the response status code should be 400
+    And the response error message should contain "Invalid door_status"
+
+  Scenario Outline: API - Validate weight limits
+    When I POST raw payload '<payload>' to the API
+    Then the response status code should be 400
+    And the response error message should contain "Invalid weight"
+
+    Examples:
+      | payload                                                  |
+      | {"position": 1, "door_status": "closed", "weight": -1}   |
+      | {"position": 1, "door_status": "closed", "weight": 2001} |
 
   # REQUIREMENT 6: Resilience (Bonus)
   Scenario: Store and Forward (Connection Resilience)
