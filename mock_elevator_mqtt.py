@@ -4,7 +4,7 @@ import paho.mqtt.client as mqtt
 import random
 import requests
 
-# Configurações
+# Configuration
 BROKER = "localhost"
 PORT = 1883
 TOPIC_DATA = "elevator/sensor_data"
@@ -12,7 +12,7 @@ TOPIC_COMMAND = "elevator/command"
 TOPIC_EVENTS = "elevator/events"
 API_URL = "http://127.0.0.1:5000/elevator-data"
 
-# Estado Inicial
+# Initial State
 elevator_state = {
     "position": 1,
     "door_status": "closed",
@@ -21,8 +21,8 @@ elevator_state = {
 }
 
 def publish_state(client):
-    """Função auxiliar para publicar o estado imediatamente"""
-    # Garante peso atualizado
+    """Helper function to publish the state immediately."""
+    # Ensure updated weight
     if elevator_state["weight"] == 0:
         elevator_state["weight"] = random.randint(0, 999)
         
@@ -42,9 +42,9 @@ def publish_error(client, command, error_message):
 
 def on_message(client, userdata, message):
     command = message.payload.decode()
-    state_changed = False # Flag para saber se precisamos publicar agora
+    state_changed = False # Flag to check if immediate publication is needed
 
-    # MANUTENÇÃO
+    # MAINTENANCE
     if command == "MAINTENANCE_ON":
         elevator_state["maintenance_mode"] = True
         print("[ELEVATOR] Maintenance Mode ACTIVATED", flush=True)
@@ -54,7 +54,7 @@ def on_message(client, userdata, message):
         print("[ELEVATOR] Maintenance Mode DEACTIVATED", flush=True)
         state_changed = True
         
-    # PORTAS
+    # DOORS
     elif command == "OPEN_DOOR":
         elevator_state["door_status"] = "open"
         print("[ELEVATOR] Door OPENING...", flush=True)
@@ -64,7 +64,7 @@ def on_message(client, userdata, message):
         print("[ELEVATOR] Door CLOSING...", flush=True)
         state_changed = True
         
-    # MOVIMENTO
+    # MOVEMENT
     elif command.startswith("MOVE_TO_"):
         if elevator_state.get("maintenance_mode"):
             err = "Elevator is in maintenance mode; MOVE_TO commands are not allowed."
@@ -88,7 +88,7 @@ def on_message(client, userdata, message):
         err = f"Unknown command received: {command}"
         publish_error(client, command, err)
 
-    # SE O ESTADO MUDOU, PUBLICA IMEDIATAMENTE (Não espera o loop de 5s)
+    # IF STATE CHANGED, PUBLISH IMMEDIATELY (Do not wait for the 5s loop)
     if state_changed:
         publish_state(client)
 
@@ -98,15 +98,15 @@ client.connect(BROKER, PORT)
 client.subscribe(TOPIC_COMMAND)
 client.loop_start()
 
-# --- LOOP PRINCIPAL ---
+# MAIN LOOP
 offline_buffer = []
 print("[ELEVATOR] Simulator Started (Reactive Mode).", flush=True)
 
 while True:
-    # 1. Gera peso aleatório
+    # 1. Generate random weight
     elevator_state["weight"] = random.randint(0, 999)
     
-    # 2. Publica e pega o payload
+    # 2. Publish and get payload
     payload_str = publish_state(client)
     current_data = json.loads(payload_str)
 
@@ -114,11 +114,11 @@ while True:
     try:
         response = requests.post(API_URL, json=current_data, timeout=2)
         if response.status_code == 200 and offline_buffer:
-            print(f"[RECOVERY] Reenviando {len(offline_buffer)} itens do buffer...", flush=True)
+            print(f"[RECOVERY] Resending {len(offline_buffer)} items from buffer...", flush=True)
             for old_data in offline_buffer:
                 requests.post(API_URL, json=old_data)
             offline_buffer = []
-            print("[RECOVERY] Buffer esvaziado!", flush=True)
+            print("[RECOVERY] Buffer cleared!", flush=True)
 
     except requests.exceptions.ConnectionError:
         offline_buffer.append(current_data)
