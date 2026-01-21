@@ -32,19 +32,20 @@ Feature: IoT Elevator Complete Test Suite
     When I send the "MAINTENANCE_OFF" command
     Then the elevator should exit maintenance mode
 
-  # NOVO: Safety Lock (Testa se o elevador bloqueia movimento em manutenção)
+  # NEW: Safety Lock (Verifies if elevator blocks movement during maintenance)
   Scenario: Safety Lock - Attempt to move during maintenance
     When I send the "MOVE" command to floor "1"
     Then the elevator should report it is on floor "1"
-    # ----------------------------------
+    # ----------
     When I send the "MAINTENANCE_ON" command
     Then the elevator should enter maintenance mode
-    # Tenta mover, mas não deve sair do lugar
+    # Attempt to move, but it should stay in place
     When I send the "MOVE" command to floor "5"
     Then the elevator should report it is on floor "1"
-    # Limpa o estado para os próximos testes
+    # Clean up state for next tests
     When I send the "MAINTENANCE_OFF" command
-  # NOVO: Door Status (Para validar o log que conversamos)
+
+  # NEW: Door Status (Validates door actuator logic)
   Scenario: Open and close the door
     When I send the "OPEN_DOOR" command
     Then the door status should be "open"
@@ -55,7 +56,7 @@ Feature: IoT Elevator Complete Test Suite
   Scenario: Verify continuous data reception
     Then the cloud should periodically receive "position", "weight", and "door_status" data
 
-  # REQUIREMENT 5: API Validation (Negative Testing Avançado)
+  # REQUIREMENT 5: API Validation (Advanced Negative Testing)
   Scenario Outline: API - Validate missing required fields
     When I POST raw payload '<payload>' to the API
     Then the response status code should be 400
